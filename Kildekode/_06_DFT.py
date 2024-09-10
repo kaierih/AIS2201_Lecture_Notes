@@ -141,7 +141,7 @@ class SinusoidSpectrumDemo:
                                         min=0,
                                         max=20,
                                         step = 1,
-                                        description=r'Digital Frekvens $\hat{\omega}\ \ (\times \pi)$:',
+                                        description=r'Frekvens $f$:',
                                         disabled=False,
                                         style = {'description_width': '25%'},
                                         layout=Layout(width='95%'),
@@ -208,8 +208,7 @@ class interactiveStem:
                                     np.zeros(self.N), # Nullsampler
                                     linefmt='C3', # Linjestil stolper
                                     markerfmt='oC3', # Punktstil for stem-markere. Default er 'o' (stor prikk)
-                                    basefmt='black', # Farge på y=0 aksen
-                                    use_line_collection=True # Hvordan "stem" skal håndtere dataene. Bruk alltid True.
+                                    basefmt='black'
                                     )
         self.samples.baseline.set_linewidth(0.5)
         # avgrensning av akser, rutenett, merkede punkt på aksene, tittel, aksenavn
@@ -245,26 +244,26 @@ class DFT_Demo():
         # Set up sine waves on canvas
         ax1 = plt.subplot(3,1,1)
         self.discreteSignal = interactiveStem(ax1, A_max=1.1, A_min=-1.1)
-        self.discreteSignal.ax.set_ylabel(r'$x[n]$')
-        self.discreteSignal.ax.set_title(r'Sinussekvens')
+        self.discreteSignal.ax.set_ylabel('$x[n]$')
+        self.discreteSignal.ax.set_title('Sinusoid')
         
 
         
         # Set up sine waves on canvas
         ax2 = plt.subplot(3,1,2)
         self.DFT_Amp = interactiveStem(ax2, A_min=0, A_max=10)
-        self.DFT_Amp.ax.set_xlabel("Frekvens-indeks $m$")
-        self.DFT_Amp.ax.set_ylabel(r'$\left|X\left(\hat{\omega}\right)\right|$')
-        self.DFT_Amp.ax.set_title(r'Styrkegradsspekter')
+        self.DFT_Amp.ax.set_xlabel("Frequency index $m$")
+        self.DFT_Amp.ax.set_ylabel('$|X[m]|$')
+        self.DFT_Amp.ax.set_title('Magnitude Spectrum')
 
         # Set up sine waves on canvas
         ax3 = plt.subplot(3,1,3)
         self.DFT_Phase = interactiveStem(ax3, A_max=np.pi, A_min=-np.pi)
         self.DFT_Phase.ax.set_xlabel("Frekvens-indeks $m$")
-        self.DFT_Phase.ax.set_ylabel(r'$\angle X\left(\hat{\omega}\right)$')
+        self.DFT_Phase.ax.set_ylabel('$\\angle X[m]$')
         self.DFT_Phase.ax.set_yticks(np.pi*np.linspace(-1,1,9))
-        self.DFT_Phase.ax.set_yticklabels([f'${x:.2f}\pi$' for x in np.linspace(-1,1,9)])
-        self.DFT_Phase.ax.set_title(r'Fasespekter')
+        self.DFT_Phase.ax.set_yticklabels([f'${x:.2f}\\pi$' for x in np.linspace(-1,1,9)])
+        self.DFT_Phase.ax.set_title('Phase Spectrum')
         
         # Tilpass figur-layout
 
@@ -288,9 +287,9 @@ class DFT_Demo():
                                         min=0,
                                         max=1,
                                         step = 0.1,
-                                        description=r'Digital Frekvens $\hat{\omega}\ (\times \pi)$:',
+                                        description='Frequency $\\hat{\\omega}\\ (\\times \\pi)$:',
                                         disabled=False,
-                                        style = {'description_width': '20%'},
+                                        style = {'description_width': '30%'},
                                         layout=Layout(width='95%'),
                                         continuous_update=False
         )
@@ -301,7 +300,7 @@ class DFT_Demo():
                                         step = 0.05,
                                         description='Ampltiude $A$:',
                                         disabled=False,
-                                        style = {'description_width': '20%'},
+                                        style = {'description_width': '30%'},
                                         layout=Layout(width='95%'),
                                         continuous_update=False
         )
@@ -310,9 +309,9 @@ class DFT_Demo():
                                         min=-1,
                                         max=1,
                                         step = 1/12,
-                                        description='Phase $\phi$:',
+                                        description='Phase $\\phi$:',
                                         disabled=False,
-                                        style = {'description_width': '20%'},
+                                        style = {'description_width': '30%'},
                                         layout=Layout(width='95%'),
                                         continuous_update=False
         )
@@ -340,7 +339,7 @@ class DFT_Demo():
         w_d = pi*F
         xn = A*cos(w_d*n+phi*pi)
         self.discreteSignal.update(n, xn)
-        self.discreteSignal.ax.set_title(r'Sinussekvens $x[n]='+str(round(A,1))+'\cdot \cos('+str(round(F,2))+'\pi\cdot n+'+str(round(phi,2))+'\pi) $')
+        self.discreteSignal.ax.set_title(r'Sinusoid $x[n]='+str(round(A,1))+'\\cdot \\cos('+str(round(F,2))+'\\pi\\cdot n+'+str(round(phi,2))+'\\pi) $')
        
         Xk = np.fft.fft(xn)
         self.DFT_Amp.update(n, np.absolute(Xk))
