@@ -73,8 +73,7 @@ class interactiveStem:
                                     np.zeros(self.N), # Nullsampler
                                     linefmt='C3', # Linjestil stolper
                                     markerfmt='xC3', # Punktstil for stem-markere. Default er 'o' (stor prikk)
-                                    basefmt='black', # Farge på y=0 aksen
-                                    use_line_collection=True # Hvordan "stem" skal håndtere dataene. Bruk alltid True.
+                                    basefmt='black' # Farge på y=0 aksen
                                     )
         self.samples.baseline.set_linewidth(0.5)
         # avgrensning av akser, rutenett, merkede punkt på aksene, tittel, aksenavn

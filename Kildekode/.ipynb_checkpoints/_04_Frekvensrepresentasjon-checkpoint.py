@@ -1,5 +1,5 @@
 from numpy import sin, cos, pi, exp
-from scipy.signal import welch
+from scipy.signal import welch, periodogram
 import numpy as np
 import matplotlib.pyplot as plt
 from ipywidgets import interact, fixed, FloatSlider, IntSlider, HBox, VBox, interactive_output, Layout
@@ -114,7 +114,7 @@ class signalAnalyzer:
             
         elif domain=='Frequency Spectrum':
             M = n_stop-n_start
-            f, Sxx_sub = welch(self.x_n[n_start:n_stop], self.f_s, 'hamming', int(M/4), int(M/8), int(M/2))
+            f, Sxx_sub = periodogram(self.x_n[n_start:n_stop], self.f_s, 'boxcar', M)
             Sxx_sub_dB = 10*np.log10(Sxx_sub)
             
             self.ax2.set_xlabel("Frequency f (Hz)")
@@ -122,7 +122,7 @@ class signalAnalyzer:
             self.ax2.set_title("Frequency content of selected signal segment")
             self.selectionCurve.set_ydata(Sxx_sub_dB)
             self.selectionCurve.set_xdata(f)
-            self.ax2.axis(xmin=0, xmax=self.f_s/2, ymin=min(Sxx_sub_dB), ymax=max(Sxx_sub_dB)+5)
+            self.ax2.axis(xmin=0, xmax=self.f_s/2, ymin=min(Sxx_sub_dB[1:]), ymax=max(Sxx_sub_dB[1:])+5)
             
         else:
             pass
