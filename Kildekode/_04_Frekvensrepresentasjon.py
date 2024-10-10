@@ -148,7 +148,7 @@ def sliderPanelSetup(set_details, n_of_sets=1, slider_type='float'):
                 if mathtext.find(" ") == -1:
                     mathtext = '$' + mathtext + '_' + str(i+1) + '$' 
                 else:
-                    mathtext = '$' + mathtext.replace(" ", '_'+str(i+1)+'\ ', 1) + '$'
+                    mathtext = '$' + mathtext.replace(" ", '_'+str(i+1)+'\\ ', 1) + '$'
             else:
                 mathtext = '$' + mathtext + '$'
             #mathtext = r'{}'.format(mathtext)
@@ -468,7 +468,7 @@ class FourierDemo:
             # Oppdater figur
             self.fig.canvas.draw()
             
-        titleStr = r"$x(t)\cdot e^{-j\frac{2\pi \cdot" +str(k)+"}{T_0}\cdot t}$"
+        titleStr = "$x(t)\\cdot e^{-j\\frac{2\\pi \\cdot" +str(k)+"}{T_0}\\cdot t}$"
         self.ax1.set_title(titleStr, fontsize=18)
         self.k = k
         
