@@ -1,0 +1,10 @@
+\begin{tikzpicture}[auto, node distance=25mm]
+	% blocks 1st level
+	\node[input] (in){};
+	\node[block, right of=in](sys1){$\text{LTI-System}$};
+	\node[output, right of=sys1] (out){};
+
+	% lines
+	\draw[->] (in) node[left]{\Large $\delta[n]$}--(sys1) node[left]{};
+   	\draw[->] (sys1) node[right]{}--(out) node[right]{\Large $h[n]$};
+\end{tikzpicture}
