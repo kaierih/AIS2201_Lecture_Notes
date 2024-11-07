@@ -3,7 +3,43 @@ import scipy.signal as sig
 import matplotlib.pyplot as plt 
 from numpy import cos, sin, pi, tan
 
+def displayFrequencyResponse(b, a=[1], num=None, mag='log', new_figure=True, **kwargs):
+    w, Hw = sig.freqz(b, a)
+    H_amp = np.abs(Hw)
+    H_phase = np.unwrap(np.angle(Hw, deg=True), period=360)
+    if new_figure==True:
+        if num is not None:
+            plt.close(num)
+        fig, [ax1, ax2] = plt.subplots(num=num, nrows=2)
+    else :
+        fig = plt.figure(num=num)
+        ax1 = fig.axes[0]
+        ax2 = fig.axes[1]
+    
+    if mag.lower()=='log':
+        ax1.plot(w, 20*np.log10(H_amp), **kwargs)
+        ax1.set_ylabel(r'$\left| H\left(\hat{\omega}\right)\right|$ (dB)')
+    else:
+        ax1.plot(w, H_amp, **kwargs)
+        ax1.set_ylabel(r'$\left| H\left(\hat{\omega}\right)\right|$')
 
+    ax1.set_xticks(np.linspace(0, 1, 6)*pi, [str(round(i,2))+r'$\pi$' for i in np.linspace(0, 1, 6)])
+    ax1.set_xlabel(r'Digital Frekvens $\hat{\omega}$')
+
+    ax1.set_xlim([0, pi])
+    ax1.set_title(r'Frekvensrespons $H\left(\hat{\omega}\right)$')
+
+    phaseResp, = ax2.plot(w, H_phase, **kwargs)
+
+    ax2.set_xticks(np.linspace(0, 1, 6)*pi, [str(round(i,2))+r'$\pi$' for i in np.linspace(0, 1, 6)])
+    ax2.set_xlabel(r'Digital Frekvens $\hat{\omega}$')
+    ax2.set_ylabel(r'$\angle H\left(\hat{\omega}\right)$ (degrees)')
+
+    if "label" in kwargs.keys():
+        ax2.legend()
+        ax1.legend()
+    fig.tight_layout(pad=0.1, w_pad=1.0, h_pad=1.0)
+    
 def zp2tf(zeroes = np.array([]), poles = np.array([]), w_ref = 0, gain = 1):
     if zeroes.any()==False:
         b = np.array([1.0])
@@ -182,36 +218,5 @@ def HsPlot(b, a, ax=None, axes=[-4, 4, -6, 6]):
     ax.plot(np.zeros(res*3), w, 20*np.log10(np.abs(Hw)), linewidth=3, color='tab:red')
     plt.tight_layout()
     
-def displayFrequencyResponse(b, a=[1], mag='log', label=None):
-    w, Hw = sig.freqz(b, a)
-    H_amp = np.abs(Hw)
-    H_phase = np.unwrap(np.angle(Hw))
-    plt.subplot(2,1,1)
-    if mag.lower()=='log':
-        plt.plot(w, 20*np.log10(H_amp), label=label)
-        plt.ylabel(r'$\left| H\left(\hat{\omega}\right)\right|$ (dB)')
-    else:
-        plt.plot(w, H_amp, label=label)
-        plt.ylabel(r'$\left| H\left(\hat{\omega}\right)\right|$')
-    plt.grid(True)
-    plt.xticks(np.linspace(0, 1, 6)*pi, [str(round(i,2))+r'$\pi$' for i in np.linspace(0, 1, 6)])
-    plt.xlabel(r'Digital Frekvens $\hat{\omega}$')
-
-    plt.xlim([0, pi])
-    plt.title(r'Frekvensrespons $H\left(\hat{\omega}\right)$')
-    plt.legend()
-    ax_phase = plt.subplot(2,1,2)
-    phaseResp, = plt.plot(w, H_phase/pi, label=label)
-    yticks = ax_phase.get_yticks()
-    ylim = ax_phase.get_ylim()
-    plt.grid(True)
-    plt.xticks(np.linspace(0, 1, 6)*pi, [str(round(i,2))+r'$\pi$' for i in np.linspace(0, 1, 6)])
-    plt.yticks(yticks, [str(round(i,2))+r'$\pi$' for i in yticks])
-    plt.xlabel(r'Digital Frekvens $\hat{\omega}$')
-    plt.ylabel(r'$\angle H\left(\hat{\omega}\right)$')
-    plt.xlim([0, pi])
-    plt.ylim(np.array(ylim))
-    plt.legend()
-    plt.tight_layout(pad=0.1, w_pad=1.0, h_pad=1.0)
     
     
